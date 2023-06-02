@@ -13,6 +13,8 @@ services:
       - ./volumes/config:/var/www/html/config
     ports:
       - "8088:80"
+    environment:
+      - TZ=Europe/Budapest
     restart: always
     devices:
       - "/dev/bus/usb:/dev/bus/usb"

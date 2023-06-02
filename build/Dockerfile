@@ -1,8 +1,8 @@
 # Dockerized Tor Relay Node on Raspberry Pi
 #
-# VERSION               0.0.1
+# VERSION               0.0.2
 
-FROM debian:stretch
+FROM debian:bullseye
 ARG proxy=""
 RUN test -z "$proxy" ||  echo "Acquire { Retries \"0\"; HTTP { Proxy \"$proxy\"; };}; " | tee /etc/apt/apt.conf.d/30proxy
 MAINTAINER darius BERNARD
@@ -46,6 +46,8 @@ RUN rm /var/www/html/index.html
 RUN adduser www-data lp && \
     mkdir -p /var/www/html/scans && \
     mkdir -p /var/www/html/config/parallel && \
+    sed -i 's/max_execution_time.*/max_execution_time = 180/' /etc/php/7.4/apache2/php.ini && \
+    sed -i 's/default_socket_timeout.*/default_socket_timeout = 180/' /etc/php/7.4/apache2/php.ini && \
     chown www-data /var/www/html/scans && \
     chown -R www-data /var/www/html/config
 
